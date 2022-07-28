@@ -22,7 +22,6 @@ def get_location_point(address):
 def acerta_df(df):
     df['endereco_completo'] = df['Número'].astype(str) + ", " + df['Nome do Logradouro'] + ", " + "SAO PAULO"
     df['geometry'] = df['endereco_completo'].apply(get_location_point)
-    df = gpd.GeoDataFrame(df, geometry=df.geometry)
     return df
 
 def baixa_dados():
@@ -38,6 +37,7 @@ def carrega_dados_uso():
     return df
 
 def cria_mapa(df):
+    df = gpd.GeoDataFrame(df, geometry=df.geometry)
     arquivo_distritos_sp = 'distritosSP_gps.geojson'
     distritos = gpd.read_file(arquivo_distritos_sp)
     map = folium.Map(tiles = "OpenStreetMap", zoom_start = 10, location=[df.geometry.x[0],df.geometry.y[0]])

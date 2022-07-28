@@ -2,7 +2,6 @@ from instrumental_functions import *
 
 
 df = carrega_dados_uso()
-print(df)
 fig = px.scatter(df, x='Área Construída (m2)', y='Valor de Transação (declarado pelo contribuinte)', color='ACC (IPTU)')
 map = cria_mapa(df)
 map.save('mapa.html')
@@ -33,7 +32,7 @@ app.layout = html.Div([
                             sort_action="native",
                             sort_mode="multi",),
             html.H2("Mapa das transações:"),
-            html.Iframe(id='map', srcDoc = open('mapa.html').read())
+            html.Iframe(id='map', srcDoc = open('mapa.html').read(), width='100%', height='600')
         ], id='output-bairro')
     ],
     style={'padding': '30px'}),
@@ -47,10 +46,8 @@ app.layout = html.Div([
 def cb_render(val):
     data = df[(df['Bairro'] == val.upper())][['Nome do Logradouro','Número','Complemento',
     'CEP', 'Data de Transação','Área do Terreno (m2)',
-    'Área Construída (m2)', 'ACC (IPTU)', 'Valor de Transação (declarado pelo contribuinte)']]
+    'Área Construída (m2)', 'ACC (IPTU)', 'Valor de Transação (declarado pelo contribuinte)','geometry']]
     fig = px.scatter(data, x='Área Construída (m2)', y='Valor de Transação (declarado pelo contribuinte)', color='ACC (IPTU)')
-    map = cria_mapa(data)
-    map.save('mapa.html')
     html_children = [
             html.H2(f"Análise das transações na região de {val.upper()}:"),
             dcc.Graph(figure=fig),
@@ -63,7 +60,7 @@ def cb_render(val):
                             sort_action="native",
                             sort_mode="multi",),
             html.H2(f"Mapa das transações em { val.upper()}:"),
-            html.Iframe(id='map', srcDoc = open('mapa.html').read())
+            html.Iframe(id='map', srcDoc = open('mapa.html').read(), width='100%', height='600')
         ]
     return html_children
 
