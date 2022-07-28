@@ -30,7 +30,7 @@ def baixa_dados():
     df = pd.read_excel(URL)
     USO = 20
     df = df[df['Uso (IPTU)'] == USO]
-    return df[0:10]
+    return df
 
 def carrega_dados_uso():
     df = baixa_dados()

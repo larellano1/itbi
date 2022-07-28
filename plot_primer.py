@@ -2,6 +2,7 @@ from instrumental_functions import *
 
 
 df = carrega_dados_uso()
+print(df)
 fig = px.scatter(df, x='Área Construída (m2)', y='Valor de Transação (declarado pelo contribuinte)', color='ACC (IPTU)')
 map = cria_mapa(df)
 map.save('mapa.html')
@@ -62,7 +63,7 @@ def cb_render(val):
                             sort_action="native",
                             sort_mode="multi",),
             html.H2(f"Mapa das transações em { val.upper()}:"),
-            dcc.Iframe(id='map', srcDoc = open('mapa.html').read())
+            html.Iframe(id='map', srcDoc = open('mapa.html').read())
         ]
     return html_children
 
