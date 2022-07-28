@@ -3,8 +3,8 @@ from instrumental_functions import *
 
 df = carrega_dados_uso()
 fig = px.scatter(df, x='Área Construída (m2)', y='Valor de Transação (declarado pelo contribuinte)', color='ACC (IPTU)')
-
-
+map = cria_mapa(df)
+map.save('mapa.html')
 
 
 app = Dash(__name__)
@@ -30,7 +30,9 @@ app.layout = html.Div([
                                                                                                                                                                     ['Nome do Logradouro','Número','Complemento','CEP', 'Data de Transação','Área do Terreno (m2)','Área Construída (m2)', 'ACC (IPTU)', 'Valor de Transação (declarado pelo contribuinte)'])],
                             filter_action="native",
                             sort_action="native",
-                            sort_mode="multi",)
+                            sort_mode="multi",),
+            html.H2("Mapa das transações:"),
+            html.Iframe(id='map', srcDoc = open('mapa.html').read())
         ], id='output-bairro')
     ],
     style={'padding': '30px'}),
@@ -46,6 +48,8 @@ def cb_render(val):
     'CEP', 'Data de Transação','Área do Terreno (m2)',
     'Área Construída (m2)', 'ACC (IPTU)', 'Valor de Transação (declarado pelo contribuinte)']]
     fig = px.scatter(data, x='Área Construída (m2)', y='Valor de Transação (declarado pelo contribuinte)', color='ACC (IPTU)')
+    map = cria_mapa(data)
+    map.save('mapa.html')
     html_children = [
             html.H2(f"Análise das transações na região de {val.upper()}:"),
             dcc.Graph(figure=fig),
@@ -56,7 +60,9 @@ def cb_render(val):
                                                                                                                                                                     ['Nome do Logradouro','Número','Complemento','CEP', 'Data de Transação','Área do Terreno (m2)','Área Construída (m2)', 'ACC (IPTU)', 'Valor de Transação (declarado pelo contribuinte)'])],
                             filter_action="native",
                             sort_action="native",
-                            sort_mode="multi",)
+                            sort_mode="multi",),
+            html.H2(f"Mapa das transações em { val.upper()}:"),
+            dcc.Iframe(id='map', srcDoc = open('mapa.html').read())
         ]
     return html_children
 

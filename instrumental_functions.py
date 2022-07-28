@@ -20,7 +20,7 @@ def get_location_point(address):
       return None
 
 def acerta_df(df):
-    df['endereco_completo'] = df['Número'].astype(str) + ", " + df['Nome do Logradouro'] + ", " + "sao paulo"
+    df['endereco_completo'] = df['Número'].astype(str) + ", " + df['Nome do Logradouro'] + ", " + "SAO PAULO"
     df['geometry'] = df['endereco_completo'].apply(get_location_point)
     df = gpd.GeoDataFrame(df, geometry=df.geometry)
     return df
@@ -30,7 +30,7 @@ def baixa_dados():
     df = pd.read_excel(URL)
     USO = 20
     df = df[df['Uso (IPTU)'] == USO]
-    return df
+    return df[0:10]
 
 def carrega_dados_uso():
     df = baixa_dados()
